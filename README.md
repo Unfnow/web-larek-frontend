@@ -253,11 +253,11 @@ yarn build
 + userMail: string- эл. почта заказчика
 
 # Ключевые типы данных
-typeOfOrder= 'online'|'upon_receipt' / Тип оплаты заказа
-elems= [obj] / Массив товаров
-elem= obj / Конкретный товар из массива
-cart= obj / экземпляр класса CartModel
-prod= obj / экземпляр класса ProductModel
++ typeOfOrder= 'online'|'upon_receipt' / Тип оплаты заказа
++ elems= [obj] / Массив товаров
++ elem= obj / Конкретный товар из массива
++ cart= obj / экземпляр класса CartModel
++ prod= obj / экземпляр класса ProductModel
 
 ## События
 on click- для каждой кнопки(класс Modal и все наследемые от него: Card, CartModal, AdressNTypeForm, MailNPhoneForm, SuccessForm)
