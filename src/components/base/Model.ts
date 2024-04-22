@@ -11,7 +11,7 @@ export interface Product {
 }
 
 export interface Cart {
-    orders: []; // orders extends Product: [];
+    orders: Product[];
     cartPrice: number;
     payType: typeOfOrder
     userAdress: string;
@@ -30,15 +30,16 @@ export class ProductModel implements Product {
 }
 
 export abstract class CartModel implements Cart{
-    orders: [];
+    orders: Product[];
     cartPrice: number;
     payType: typeOfOrder;
     userAdress: string;
     userPhone: string;
     userMail: string;
     
-
-    priceCount(obj:object){
-
+    priceCount(obj:CartModel){
+        obj.orders.forEach((elem)=>{
+            obj.cartPrice=+elem.price;
+        })
     }
 }
