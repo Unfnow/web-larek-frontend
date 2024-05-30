@@ -1,4 +1,5 @@
 import {IEvents} from "./events";
+
 /**
  * Базовый компонент
  */
