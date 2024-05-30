@@ -1,8 +1,9 @@
-import { Component } from '../base/Component';
-import { IProduct, ICart, typeOfOrder } from '../../types';
+import { Component } from './base/Component';
+import {Model} from './base/Model';
+import { IProduct, ICart, typeOfOrder } from './../types';
 //import {IProduct} from "../../components/AppData";
-import { createElement, ensureElement, formatNumber } from '../../utils/utils';
-import { EventEmitter } from '../base/events';
+import { createElement, ensureElement, formatNumber } from './../utils/utils';
+import { EventEmitter } from './base/Events';
 
 interface IBasketView {
 	items: HTMLElement[];
@@ -10,13 +11,13 @@ interface IBasketView {
 	selected: string[];
 }
 
-export class CartModel extends Component<ICart> {
+export class CartModel extends Model<ICart> {
 	//убрать абстрактность в документации
 	orders: IProduct[];
 	cartPrice: number;
 
-	constructor(container: HTMLElement, protected events: EventEmitter) {
-		super(container);
+	constructor(container: Partial<ICart>, protected events: EventEmitter) {
+		super(container,events);
 		this.events = events;
 		this.orders = [];
 		this.cartPrice = 0;
@@ -72,12 +73,14 @@ export class Basket extends Component<IBasketView> {
 	set items(items: HTMLElement[]) {
 		if (items.length) {
 			this._list.replaceChildren(...items);
+			this.setDisabled(this._button,false);
 		} else {
 			this._list.replaceChildren(
 				createElement<HTMLParagraphElement>('p', {
 					textContent: 'Корзина пуста',
 				})
 			);
+			this.setDisabled(this._button,true);
 		}
 	}
 

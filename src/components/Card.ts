@@ -1,33 +1,18 @@
-import { EventEmitter } from './base/events';
+import { EventEmitter } from './base/Events';
 import { Component } from './base/Component';
 import { IProduct, ColorCategory } from '../types';
-import {
-	bem,
-	createElement,
-	ensureElement,
-	formatNumber,
-} from '../utils/utils';
-import clsx from 'clsx';
+import {ensureElement} from '../utils/utils';
 
 interface ICardActions {
 	onClick: (event: MouseEvent) => void;
 }
-
-/*export interface ICard<T> {
-    title: string;
-    text?: string | string[];
-    image: string;
-    category: string;
-    price: number;
-    //status: T;
-}*/
 
 export class Card<T> extends Component<IProduct> {
 	//protected events = new EventEmitter();
 	protected _title: HTMLElement;
 	protected _image?: HTMLImageElement;
 	protected _description?: HTMLElement;
-	protected _button?: HTMLButtonElement;
+	public _button?: HTMLButtonElement;
 	protected _category?: HTMLButtonElement;
 	protected _price?: HTMLButtonElement;
 
@@ -83,9 +68,7 @@ export class Card<T> extends Component<IProduct> {
 			ColorCategory.find((elem) => elem == value)
 		);
 		const cat = ColorCategory[ind - 1];
-		this.container
-			.querySelector('.card__category')
-			.classList.add('card__category_' + cat);
+		this.toggleClass(this._category,'card__category_' + cat)
 		this.setText(this._category, value);
 	}
 
@@ -96,6 +79,8 @@ export class Card<T> extends Component<IProduct> {
 	set price(value: string) {
 		if (value == null) {
 			this.setText(this._price, 'Бесценно');
+			this.setText(this._button, 'Нельзя купить');
+			this.setDisabled(this._button,true);
 		} else {
 			this.setText(this._price, value + ' синапсов');
 		}
@@ -105,49 +90,27 @@ export class Card<T> extends Component<IProduct> {
 		return this._price.textContent || '';
 	}
 
-	/*set text(value: string | string[]) {
-        if (Array.isArray(value)) {
-            this._text.replaceWith(...value.map(str => {
-                console.log(value)
-                console.log('onCard')
-                const descTemplate = this._text.cloneNode() as HTMLElement;
-                this.setText(descTemplate, str);
-                return descTemplate;
-            }));
-        } else {
-            this.setText(this._text, value);
-        }
-    }*/
 }
 
 export type CatalogItemStatus = {
-	//status: LotStatus,
-	//label: string
+	//
 };
 
 export class CatalogItem extends Card<CatalogItemStatus> {
 	protected _status: HTMLElement;
-	/*
-    constructor(container: HTMLElement, actions?: ICardActions) {
-        super('card', container, actions);
-        this._status = ensureElement<HTMLElement>(`.card__status`, container);
-    }
-
-    set status({ status, label }: CatalogItemStatus) {
-        this.setText(this._status, label);
-        this._status.className = clsx('card__status', {
-            [bem(this.blockName, 'status', 'active').name]: status === 'active',
-            [bem(this.blockName, 'status', 'closed').name]: status === 'closed'
-        });
-    }*/
 }
 
 export class AuctionItem extends Card<HTMLElement> {
 	protected _status: HTMLElement;
+	protected events = new EventEmitter();
 
 	constructor(container: HTMLElement, actions?: ICardActions) {
 		super(container, actions);
-		//this._status = ensureElement<HTMLElement>(`.lot__status`, container);
+		if (actions?.onClick) {
+            if (this._button) {
+                this._button.addEventListener('click',actions.onClick); 
+			}
+		}
 	}
 }
 
@@ -180,7 +143,6 @@ export class BasketItem extends Component<IBasketItem> {
 			`.card__button`,
 			this.container
 		);
-		//console.log(this._button)
 		if (this._button) {
 			this._button.addEventListener('click', () => {
 				console.log(item);
@@ -201,4 +163,3 @@ export class BasketItem extends Component<IBasketItem> {
 		this.setText(this._price, value + ' синапсов');
 	}
 }
-

@@ -11,7 +11,6 @@ import {
 	IProduct,
 	IContactsForm,
 } from '../types';
-import { CartModel } from './common/Basket';
 
 export type CatalogChangeEvent = {
 	catalog: ProductModel[];
@@ -49,6 +48,10 @@ export class AppState extends Model<IAppState> {
         this.order.total= cartToltal
 	}
 
+	setItemsClear() {
+		this.order.items=[];
+	}
+
 	setCatalog(items: ProductModel[]) {
 		this.catalog = items.map((item) => new ProductModel(item, this.events));
 		this.emitChanges('items:changed', { catalog: this.catalog });
@@ -78,8 +81,9 @@ export class AppState extends Model<IAppState> {
 		if (!this.order.address) {
 			errorsord.address = 'Необходимо указать адрес';
 		}
-
-		this.FormContactsErrors = errorsord;
+		this.FormOrderErrors = errorsord;
+		
+		console.log(this.FormOrderErrors)
 		this.events.emit('FormOrderErrors:change', this.FormOrderErrors);
 		return Object.keys(errorsord).length === 0;
 	}
@@ -92,7 +96,9 @@ export class AppState extends Model<IAppState> {
 		if (!this.order.phone) {
 			errorscon.phone = 'Необходимо указать телефон';
 		}
-		this.FormOrderErrors = errorscon;
+		this.FormContactsErrors = errorscon;
+		
+		console.log(this.FormContactsErrors);
 		this.events.emit('FormContactsErrors:change', this.FormContactsErrors);
 		return Object.keys(errorscon).length === 0;
 	}

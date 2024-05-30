@@ -1,5 +1,5 @@
-import {Component} from "../base/Component";
-import {ensureElement} from "../../utils/utils";
+import {Component} from "./base/Component";
+import {ensureElement} from "./../utils/utils";
 
 interface ISuccess {
     total: number;
@@ -24,6 +24,7 @@ export class Success extends Component<ISuccess> {
         if (actions?.onClick) {
             this._close.addEventListener('click', actions.onClick);
         }
+
 
         this.total.textContent='Списано ' +cartPrice+ ' синапсов';
 

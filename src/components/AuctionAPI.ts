@@ -1,4 +1,4 @@
-import { Api, ApiListResponse } from './base/api';
+import { Api, ApiListResponse } from './base/Api';
 import {IOrder,IProduct, LotUpdate, IOrderResult} from "../types";
 
 export interface IAuctionAPI {

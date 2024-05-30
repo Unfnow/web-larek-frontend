@@ -1,5 +1,5 @@
 import { Component } from '../base/Component';
-import { IEvents } from '../base/events';
+import { IEvents } from '../base/Events';
 import { ensureElement } from '../../utils/utils';
 
 interface IFormState {
@@ -14,10 +14,13 @@ export class Form<T> extends Component<IFormState> {
 	constructor(protected container: HTMLFormElement, protected events: IEvents) {
 		super(container);
 
-		this._submit = ensureElement<HTMLButtonElement>('button[type=submit]',this.container);
+		this._submit = ensureElement<HTMLButtonElement>(
+			'button[type=submit]',
+			this.container
+		);
 		this._errors = ensureElement<HTMLElement>('.form__errors', this.container);
 
-		console.log(this.container)
+		console.log(this.container);
 
 		this.container.addEventListener('input', (e: Event) => {
 			const target = e.target as HTMLInputElement;
@@ -37,11 +40,11 @@ export class Form<T> extends Component<IFormState> {
 			field,
 			value,
 		});
-		console.log(`${this.container.name}.${String(field)}:change`)
+		console.log(`${this.container.name}.${String(field)}:change`);
 	}
 
 	set valid(value: boolean) {
-		this._submit.disabled = !value;
+		this.setDisabled(this._submit,!value)
 	}
 
 	set errors(value: string) {
